@@ -1,0 +1,92 @@
+.navbar {
+    background-color: rgba(174, 206, 174, 0.9) ;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    
+
+  }
+  
+  .navbar-nav {
+    display: flex;
+    list-style-type: none;
+
+  }
+  
+  .nav-item {
+    margin-top: 12px;
+
+    margin-right: 10px;
+    font-size: large;
+  }
+  
+  .nav-link {
+    color: #070bf2;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+  
+  .search-form {
+    display: flex;
+    margin-left: auto;
+  }
+  
+  .search-input {
+    margin-top: 7px;    
+    border: none;
+    border-radius: 4px 0 0 4px;
+    margin-right: 10px;
+    height: 22px;
+    
+  }
+  
+  .search-button {
+
+    background-color: #333;
+    color: #ffe606;
+    border: none;
+    border-radius: 4px 4px 4px 0;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-right: 4px;
+    height: 33.5px;
+  }
+
+  .search-button :hover{
+    color: #070bf2;
+  }
+  
+
+
+  /* signup */
+
+  .signup-form {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #079523;
+  }
