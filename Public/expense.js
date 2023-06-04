@@ -1,25 +1,39 @@
-// Get the signup form element
-const signupForm = document.querySelector('.signup-form');
-
-// Event listener for form submission
-signupForm.addEventListener('submit', (e) => {
-  e.preventDefault(); // Prevent form submission
-
-  // Get the input field values
+async function add() {
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-
-  // Create an object to store the signup data
+  
   const signupData = {
     name: name,
     email: email,
     password: password
   };
 
-  // Perform any desired actions with the signup data
-  console.log(signupData);
-
-  // Reset the form
+  try {
+    const response = await axios.post('http://localhost:9000/signup', signupData);
+  
+    const message = response.data.message;
+  
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = message;
+    
+  } catch (error) {
+    if (error.response) {
+      const errorMessage = error.response.data.message;
+  
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = errorMessage;
+    } else {
+      console.error('Error submitting signup form:', error);
+    }
+  }
   signupForm.reset();
+
+}
+
+const signupForm = document.querySelector('.signup-form');
+
+signupForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+ 
 });

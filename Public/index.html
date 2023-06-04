@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExpenseTracker</title>
-    <script src="expense.js"></script>
     <link rel="stylesheet" href="expense.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
 </head>
 <body>
     <nav class="navbar">
@@ -32,8 +33,9 @@
     </nav>
 
     <!-- signUp form -->
-    <form class="signup-form">
+    <form class="signup-form" onsubmit="add()">
         <h1>New User! Sign Up</h1>
+        <div id="message"></div><br>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
         
@@ -47,5 +49,8 @@
       </form>
       
       
+<script src="expense.js"></script>
+      
 </body>
+
 </html>

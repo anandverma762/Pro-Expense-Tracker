@@ -90,3 +90,10 @@
   button:hover {
     background-color: #079523;
   }
+
+  #message {
+    color: #f67409;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+
+  }
