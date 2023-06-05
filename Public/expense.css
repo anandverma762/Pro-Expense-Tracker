@@ -58,7 +58,7 @@
 
   /* signup */
 
-  .signup-form {
+  .signup-form,.login-form {
     max-width: 300px;
     margin: 0 auto;
   }
@@ -87,6 +87,24 @@
     cursor: pointer;
   }
   
+  .login {
+    background-color: #03be35;
+    color: #f2f1f1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 100px;
+
+  }
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+
+
   button:hover {
     background-color: #079523;
   }
