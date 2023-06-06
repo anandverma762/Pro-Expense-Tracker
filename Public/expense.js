@@ -45,6 +45,10 @@ async function login() {
 
     const redirectUrl = response.data.redirect;
 
+    const Token = response.data.token;
+
+    localStorage.setItem('token',Token);
+
     window.location.href = redirectUrl;
 
   } catch (error) {
@@ -94,7 +98,8 @@ async function addExpense() {
   };
 
   try {
-    const response = await axios.post('http://localhost:9000/expensedata', expenseData);
+    const token = localStorage.getItem('token');
+    const response = await axios.post('http://localhost:9000/expensedata', expenseData,{ headers: { "Authorization": token}});
 
    
     // Refresh expense list
@@ -115,9 +120,10 @@ async function addExpense() {
 // Function to fetch and display expenses
 async function fetchExpenses() {
   try {
-    const response = await axios.get('/expense');
+    const token = localStorage.getItem('token');
+    const response = await axios.get('/expense',{ headers: { "Authorization": token}});
     const expenses = response.data.data;
-    const expenseList = document.getElementById('expense');
+    const expenseList = document.getElementById('exp');
     expenseList.innerHTML = '';
 
     expenses.forEach((expense) => {
@@ -129,6 +135,7 @@ async function fetchExpenses() {
       deleteButton.className = 'delete-button';
       deleteButton.textContent = 'Delete';
       deleteButton.addEventListener('click', async () => {
+
         await axios.post(`/delete/${expense.id}`);
         expenseList.removeChild(listItem);
       });

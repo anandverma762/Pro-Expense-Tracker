@@ -4,7 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const sequelize = require('./Util/database'); 
 const userRoutes = require('./Routes/userroutes');
-const expenserout = require('./Routes/expenserout');
+const expenseRoutes = require('./Routes/expenserout');
+const Expense = require('./Models/expense');
+const User = require('./Models/user');
 
 const app = express();
 
@@ -12,10 +14,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'Public')));
 
-app.use('/user',userRoutes);
+app.use('/user', userRoutes);
+app.use(expenseRoutes);
 
-app.use(expenserout);
-
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 const startServer = async () => {
   try {
