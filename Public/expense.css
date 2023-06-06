@@ -1,7 +1,13 @@
+body {
+
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
 .navbar {
     background-color: rgba(174, 206, 174, 0.9) ;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    
+   
 
   }
   
@@ -95,9 +101,12 @@
     border-radius: 4px;
     cursor: pointer;
     display: inline-block;
-    margin-left: 100px;
 
   }
+    .lg-btn,.sign-btn{
+      display: block;
+      margin-left: 535px;
+    }
   a {
     text-decoration: none;
     color: white;

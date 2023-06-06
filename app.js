@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const sequelize = require('./Util/database'); 
 const userRoutes = require('./Routes/userroutes');
+const expenserout = require('./Routes/expenserout');
 
 const app = express();
 
@@ -11,7 +12,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'Public')));
 
-app.use(userRoutes);
+app.use('/user',userRoutes);
+
+app.use(expenserout);
 
 
 const startServer = async () => {

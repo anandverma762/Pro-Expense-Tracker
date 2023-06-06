@@ -10,7 +10,7 @@ async function add() {
   };
 
   try {
-    const response = await axios.post('http://localhost:9000/signup', signupData);
+    const response = await axios.post('http://localhost:9000/user/signup', signupData);
 
     const message = response.data.message;
 
@@ -27,7 +27,6 @@ async function add() {
       console.error('Error submitting signup form:', error);
     }
   }
-  signupForm.reset();
 }
 
 //login form
@@ -42,12 +41,11 @@ async function login() {
   };
 
   try {
-    const response = await axios.post('http://localhost:9000/login', loginData);
+    const response = await axios.post('http://localhost:9000/user/login', loginData);
 
-    const message = response.data.message;
+    const redirectUrl = response.data.redirect;
 
-    const messageElement = document.getElementById('message');
-    messageElement.textContent = message;
+    window.location.href = redirectUrl;
 
   } catch (error) {
     if (error.response) {
@@ -59,7 +57,6 @@ async function login() {
       console.error('Error submitting login form:', error);
     }
   }
-  loginForm.reset();
 }
 
 
@@ -69,8 +66,90 @@ document.addEventListener('submit', async (event) => {
   if (event.target.matches('.signup-form')) {
     // Signup form submitted
     add();
+    event.target.reset();
   } else if (event.target.matches('.login-form')) {
     // Login form submitted
     login();
+    event.target.reset();
+
+  } else if (event.target.matches('.expense-form')) {
+    //when expense added
+    addExpense();
+    event.target.reset();
+
   }
 });
+
+
+//function to add expenses
+async function addExpense() {
+  const amount = document.getElementById('amount').value;
+  const description = document.getElementById('description').value;
+  const category = document.getElementById('category').value;
+
+  const expenseData = {
+    amount: amount,
+    description: description,
+    category: category
+  };
+
+  try {
+    const response = await axios.post('http://localhost:9000/expensedata', expenseData);
+
+   
+    // Refresh expense list
+    fetchExpenses();
+
+  } catch (error) {
+    if (error.response) {
+      const errorMessage = error.response.data.message;
+
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = errorMessage;
+    } else {
+      console.error('Error submitting expense form:', error);
+    }
+  }
+}
+
+// Function to fetch and display expenses
+async function fetchExpenses() {
+  try {
+    const response = await axios.get('/expense');
+    const expenses = response.data.data;
+    const expenseList = document.getElementById('expense');
+    expenseList.innerHTML = '';
+
+    expenses.forEach((expense) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `Amount: $${expense.amount} - Description: ${expense.description} - Category: ${expense.category}`;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'delete-button';
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', async () => {
+        await axios.post(`/delete/${expense.id}`);
+        expenseList.removeChild(listItem);
+      });
+      listItem.appendChild(deleteButton);
+
+      const editButton = document.createElement('button');
+      editButton.type = 'button';
+      editButton.textContent = 'Edit';
+      editButton.className = 'edit-button'
+      editButton.addEventListener('click', () => {
+        editExpense(expense.id); // Call a function to handle expense editing
+      });
+      listItem.appendChild(editButton);
+
+      expenseList.appendChild(listItem);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+window.addEventListener('load', fetchExpenses);
+
+
