@@ -7,6 +7,8 @@ const userRoutes = require('./Routes/userroutes');
 const expenseRoutes = require('./Routes/expenserout');
 const Expense = require('./Models/expense');
 const User = require('./Models/user');
+const Order = require('./Models/order');
+const purchaserout = require('./Routes/purchase');
 
 const app = express();
 
@@ -16,9 +18,13 @@ app.use(express.static(path.join(__dirname, 'Public')));
 
 app.use('/user', userRoutes);
 app.use(expenseRoutes);
+app.use('/purchase',purchaserout)
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 const startServer = async () => {
   try {

@@ -23,6 +23,11 @@ const User = sequelize.define('user',{
     password: {
         type: Seq.CHAR,
         allowNull: false
+    },
+    ispremiumuser: {
+        type:Seq.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 })
 

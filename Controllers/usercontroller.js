@@ -68,7 +68,7 @@ exports.getExpenses = (req, res, next) => {
   req.user
     .getExpenses()
     .then((result) => {
-      res.status(200).json({ data: result });
+      res.status(200).json({ data: result ,ispremium: req.user.ispremiumuser });
     })
     .catch((err) => {
       console.log(err);

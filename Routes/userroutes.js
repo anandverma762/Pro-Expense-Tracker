@@ -9,4 +9,6 @@ rout.post('/signup',userController.signUpUser);
 rout.post('/login',userController.loginUser);
 
 
+
+
 module.exports = rout;

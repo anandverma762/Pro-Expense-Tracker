@@ -42,7 +42,16 @@ body {
     margin-right: 5px;
   }
   
-  .search-button {
+  #rzr {
+    font-size: large;
+    margin-right: 10px;
+    padding: 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #02f36ce6;
+    background-color: #ec0d0d26;
+  }
+  .search-button{
     padding: 5px 10px;
     border-radius: 4px;
     background-color: #333;
