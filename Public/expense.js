@@ -12,7 +12,7 @@ async function add() {
   };
 
   try {
-    const response = await axios.post('http://localhost:9000/user/signup', signupData);
+    const response = await axios.post('/user/signup', signupData);
 
     const message = response.data.message;
 
@@ -42,7 +42,7 @@ async function login() {
   };
 
   try {
-    const response = await axios.post('http://localhost:9000/user/login', loginData);
+    const response = await axios.post('/user/login', loginData);
 
     const redirectUrl = response.data.redirect;
     btnhide = response.data.ispremium;
@@ -103,7 +103,7 @@ async function addExpense() {
 
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post('http://localhost:9000/expensedata', expenseData,{ headers: { "Authorization": token}});
+    const response = await axios.post('/expensedata', expenseData,{ headers: { "Authorization": token}});
 
   //  const ispremium = localStorage.getItem('ispremium');
     // Refresh expense list
@@ -131,9 +131,13 @@ async function fetchExpenses() {
     const expenses = response.data.data;
     const isPremium = response.data.ispremium;
     if (isPremium) {
+      const pre = document.getElementById('Premiumuser');
       const buyPremiumBtn = document.getElementById('rzr');
+      const showldrbtn = document.getElementById('ldr');
       if (buyPremiumBtn) {
         buyPremiumBtn.style.display = 'none';
+        pre.style.display = 'block';
+        showldrbtn.style.display = 'block';
       }
     }
     const expenseList = document.getElementById('exp');
@@ -141,7 +145,7 @@ async function fetchExpenses() {
 
     expenses.forEach((expense) => {
       const listItem = document.createElement('li');
-      listItem.textContent = `Amount: $${expense.amount} - Description: ${expense.description} - Category: ${expense.category}`;
+      listItem.textContent = ` $${expense.amount} - ${expense.description} - ${expense.category}`;
 
       const deleteButton = document.createElement('button');
       deleteButton.type = 'button';
@@ -179,7 +183,7 @@ document.getElementById('rzr').onclick = async (e) => {
   e.preventDefault();
   const token = localStorage.getItem('token');
 
-  const response = await axios.get('http://localhost:9000/purchase/buypremium', {
+  const response = await axios.get('/purchase/buypremium', {
     headers: { "Authorization": token }
   });
 
@@ -192,16 +196,26 @@ document.getElementById('rzr').onclick = async (e) => {
     description: "Premium Subscription",
     handler: async (response) => {
       try {
-        await axios.post('http://localhost:9000/purchase/updatestatus', {
-          order_id: options.order_id,
-          payment_id: response.razorpay_payment_id
-        }, {
-          headers: { "Authorization": token }
-        });
-        window.alert("You are now a Premium User");
-      } catch (error) {
-        window.alert("Failed to update purchase status");
-      }
+  await axios.post('/purchase/updatestatus', {
+    order_id: options.order_id,
+    payment_id: response.razorpay_payment_id
+  }, {
+    headers: { "Authorization": token }
+  });
+  window.alert("You are now a Premium User");
+  fetchExpenses();
+} catch (error) {
+  console.error("Failed to update purchase status:", error);
+  // Update the status as "FAILED" if the transaction fails
+  await axios.post('/purchase/updatestatus', {
+    order_id: options.order_id,
+    payment_id: null // Set the payment ID as null
+  }, {
+    headers: { "Authorization": token }
+  });
+  window.alert("Transaction failed");
+}
+
     },
    
     modal: {
@@ -213,6 +227,33 @@ document.getElementById('rzr').onclick = async (e) => {
 
   const rzp = new Razorpay(options);
   rzp.open();
-
 };
+
+const leaderboardButton = document.getElementById('ldr');
+
+leaderboardButton.addEventListener('click',async (e) => {
+const leaderboardContainer = document.querySelector('.ldr-list-container');
+  const token = localStorage.getItem('token')
+  
+  if (leaderboardContainer.style.display === 'none') {
+    const response = await axios.get('/premium/showldr',{
+      headers: { "Authorization": token }
+    })
+    const ldrlist = document.querySelector('#ldrlist');
+    ldrlist.innerHTML='';
+    const dataldr = response.data.ldr;
+    console.log(dataldr);
+    dataldr.forEach((expense)=>{
+      const li = document.createElement('li');
+      li.textContent = `Name: ${expense.name} - Total Expense:  $${expense.amount} `;
+      ldrlist.appendChild(li);
+
+    })
+    leaderboardContainer.style.display = 'block';
+    leaderboardButton.textContent = 'Hide Leaderboard';
+  } else {
+    leaderboardContainer.style.display = 'none';
+    leaderboardButton.textContent = 'Show Leaderboard';
+  }
+});
 

@@ -51,6 +51,12 @@ body {
     color: #02f36ce6;
     background-color: #ec0d0d26;
   }
+
+   #Premiumuser{
+    display: none;
+    color: rgb(14, 218, 14);
+    margin-right: 10px;
+  }
   .search-button{
     padding: 5px 10px;
     border-radius: 4px;
@@ -123,14 +129,14 @@ body {
 .container {
   display: flex;
   justify-content: space-between;
-  max-width: 900px;
+  /* max-width: 900px; */
   margin: 0 auto;
   padding: 20px;
   background-color: #f2f2f2;
 }
 
 .expense-form-container {
-  flex: 1;
+  flex: auto;
   margin-right: 20px;
   background-color: #fff;
   padding: 20px;
@@ -139,14 +145,24 @@ body {
 }
 
 .expense-list-container {
-  
-  background-color: #fff;
+  flex: auto;
+  margin-left: 20px;
+  background-color: #0cd520;
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.expense-list-container h2 {
+.ldr-list-container {
+  display: none;
+  flex: auto;
+  margin-left: 20px;
+  background-color: #c2ec07;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.expense-list-container h2,.ldr-list-container h2 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -175,4 +191,19 @@ body {
 
 .edit-button {
   background-color: #2196f3;
+}
+
+#ldr{
+  padding: 5px 10px;
+  margin-left: 5px;
+  border-radius: 4px;
+  background-color: #062ce9;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+#ldrlist{
+  color: #2a0cd5;
 }

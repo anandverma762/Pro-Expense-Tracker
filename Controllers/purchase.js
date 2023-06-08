@@ -32,14 +32,31 @@ exports.updatePurchase = async (req, res, next) => {
   try {
     const paymentId = req.body.payment_id;
     const orderId = req.body.order_id;
-    console.log("we reached here"+ req.body)
     const order = await Order.findOne({ where: { orderId: orderId } });
-    await order.update({ paymentId: paymentId, status: "SUCCESS" });
 
-    await req.user.update({ ispremiumuser: true });
-
-    res.status(202).json({ message: "Transaction Successful" });
+    if (order) {
+      await order.update({ paymentId: paymentId, status: "SUCCESS" });
+      await req.user.update({ ispremiumuser: true });
+      res.status(202).json({ message: "Transaction Successful" });
+    } else {
+      console.log("hello i am here")
+      res.status(400).json({ message: "Invalid order ID" });
+    }
   } catch (error) {
     console.log(error);
+    try {
+      const orderId = req.body.order_id;
+      const order = await Order.findOne({ where: { orderId: orderId } });
+      if (order) {
+        await order.update({ paymentId: null, status: "FAILED" });
+        res.status(500).json({ message: "Transaction Failed" });
+      } else {
+        res.status(400).json({ message: "Invalid order ID" });
+      }
+    } catch (error) {
+      console.error("Failed to update purchase status:", error);
+      res.status(500).json({ message: "Transaction Failed" });
+    }
   }
-};
+}
+
