@@ -5,7 +5,7 @@ exports.authenticate = (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const secretKey = 'bQTnz6AuMJvmXXQsVPrxeQNvzDkimo7VNXxHeSBfClLufmCVZRUuyTwJF311JHuh';
-    
+    // console.log("token>>>> "+token);
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }

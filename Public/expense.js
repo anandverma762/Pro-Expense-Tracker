@@ -249,7 +249,7 @@ const leaderboardContainer = document.querySelector('.ldr-list-container');
     console.log(dataldr);
     dataldr.forEach((expense)=>{
       const li = document.createElement('li');
-      li.textContent = `Name: ${expense.name} - Total Expense:  $${expense.amount} `;
+      li.textContent = `Name: ${expense.name} - Total Expense:  $${expense.totalamount} `;
       ldrlist.appendChild(li);
 
     })

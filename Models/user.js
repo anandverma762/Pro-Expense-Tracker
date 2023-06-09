@@ -24,6 +24,12 @@ const User = sequelize.define('user',{
         type: Seq.CHAR,
         allowNull: false
     },
+    totalamount:  {
+        type: Seq.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
+    ,
     ispremiumuser: {
         type:Seq.BOOLEAN,
         allowNull: false,
