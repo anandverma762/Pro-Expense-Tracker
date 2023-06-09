@@ -162,8 +162,12 @@ async function fetchExpenses() {
       editButton.type = 'button';
       editButton.textContent = 'Edit';
       editButton.className = 'edit-button'
-      editButton.addEventListener('click', () => {
-        editExpense(expense.id); // Call a function to handle expense editing
+      editButton.addEventListener('click',async () => {
+        await axios.post(`/delete/${expense.id}`);
+        expenseList.removeChild(listItem);
+        document.getElementById('amount').value = expense.amount;
+        document.getElementById('category').value = expense.category;
+        document.getElementById('description').value = expense.description;
       });
       listItem.appendChild(editButton);
 
