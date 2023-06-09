@@ -4,29 +4,18 @@ const sequelize = require('../Util/database');
 
 exports.showleader = async (req, res, next) => {
   try {
-    const users = await User.findAll({
-      attributes: ['id','name']
-    });
-    const expenses = await Expense.findAll({
-      attributes: [
-        'userId',
-        [sequelize.fn('sum', sequelize.col('amount')), 'total']
+    const amountAndName = await User.findAll({
+      attributes: ['name',[sequelize.fn('sum', sequelize.col('amount')), 'amount']],
+      include: [
+        {
+          model: Expense,
+          attributes: []
+        }
       ],
-      group: ['userId']
+      group: ['user.id'],
+      order: [[sequelize.literal('amount'), 'DESC']]
     });
-    
-    
-    const amountAndName = [];
-    
-    users.forEach((user) => {
-      const userId = user.id;
-      const expense = expenses.find((item) => item.userId === userId);
-      const total = expense ? expense.dataValues.total : 0;
-      amountAndName.push({ name: user.name, amount: total });
-    });
-    
-    // Sort the array in descending order based on the amount
-    amountAndName.sort((a, b) => b.amount - a.amount);
+   
     
     res.status(200).json({ ldr: amountAndName });
     
