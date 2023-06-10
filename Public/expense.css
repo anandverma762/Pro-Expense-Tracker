@@ -64,7 +64,7 @@ body {
 
   /* signup */
 
-  .signup-form,.login-form,.forgot-form {
+  .signup-form,.login-form,.forgot-form ,.reset-form{
     max-width: 300px;
     margin: 0 auto;
   }

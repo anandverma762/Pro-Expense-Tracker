@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // Your JavaScript code here
 
 //signup form
 async function add() {
@@ -261,3 +263,4 @@ const leaderboardContainer = document.querySelector('.ldr-list-container');
   }
 });
 
+});

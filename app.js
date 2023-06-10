@@ -11,6 +11,7 @@ const Order = require('./Models/order');
 const purchaserout = require('./Routes/purchase');
 const premiumrout = require('./Routes/premium');
 const forgotrout = require('./Routes/forgot');
+const fpr = require('./Models/forgotpasswordrequests');
 const app = express();
 
 app.use(cors());
@@ -28,6 +29,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(fpr);
+fpr.belongsTo(User);
 
 const startServer = async () => {
   try {
