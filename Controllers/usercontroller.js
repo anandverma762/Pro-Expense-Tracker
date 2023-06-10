@@ -2,6 +2,7 @@ const User = require("../Models/user");
 const bcrypt = require("bcrypt");
 const Expense = require("../Models/expense");
 const jwt = require("jsonwebtoken");
+const sequelize = require("../Util/database");
 
 const secretkey =
   "bQTnz6AuMJvmXXQsVPrxeQNvzDkimo7VNXxHeSBfClLufmCVZRUuyTwJF311JHuh";
@@ -73,13 +74,16 @@ exports.getExpenses = async (req, res, next) => {
 };
 
 exports.postExpenses = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
-    const expense = await req.user.createExpense(req.body);
+    const expense = await req.user.createExpense(req.body ,{ transaction: t});
     const amount = parseInt(req.body.amount);
     req.user.totalamount += amount; // Add the parsed amount to totalamount
-    await req.user.save(); // Save the updated totalamount
+    await req.user.save({ transaction: t}); // Save the updated totalamount
+    await t.commit();
     res.status(201).json({ message: "Expense Added", totalamount: req.user.totalamount });
   } catch (err) {
+    await t.rollback();
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -88,7 +92,7 @@ exports.postExpenses = async (req, res, next) => {
 
 exports.deleteExpense = async (req, res, next) => {
   const exid = req.params.id;
-
+  const t = await sequelize.transaction();
   try {
     const expense = await Expense.findOne({ where: { id: exid } });
 
@@ -101,12 +105,14 @@ exports.deleteExpense = async (req, res, next) => {
         res.status(404).json({ message: "User not found" });
       } else {
         const newTotal = user.totalamount - expense.amount;
-        await user.update({ totalamount: newTotal });
-        await expense.destroy();
+        await user.update({ totalamount: newTotal , transaction: t});
+        await expense.destroy({ transaction: t});
+        await t.commit();
         res.status(200).json({ message: "Deleted Successfully" });
       }
     }
   } catch (error) {
+    await t.rollback();
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
   }

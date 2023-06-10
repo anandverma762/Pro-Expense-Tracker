@@ -1,36 +1,35 @@
 const jwt = require('jsonwebtoken');
 const User = require('../Models/user');
+const { promisify } = require('util');
 
-exports.authenticate = (req, res, next) => {
+exports.authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const secretKey = 'bQTnz6AuMJvmXXQsVPrxeQNvzDkimo7VNXxHeSBfClLufmCVZRUuyTwJF311JHuh';
-    // console.log("token>>>> "+token);
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
 
-    jwt.verify(token, secretKey, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Invalid token' });
-      }
-
+    const verify = promisify(jwt.verify);
+    try {
+      const decoded = await verify(token, secretKey);
       const userId = decoded.userId;
 
-      User.findByPk(userId)
-        .then(user => {
-          if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-          }
+      try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
 
-          req.user = user;
-          next();
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json({ message: 'Internal Server Error' });
-        });
-    });
+        req.user = user;
+        next();
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Internal Server Error' });
