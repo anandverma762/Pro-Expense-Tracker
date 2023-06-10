@@ -10,6 +10,7 @@ const User = require('./Models/user');
 const Order = require('./Models/order');
 const purchaserout = require('./Routes/purchase');
 const premiumrout = require('./Routes/premium');
+const forgotrout = require('./Routes/forgot');
 const app = express();
 
 app.use(cors());
@@ -20,6 +21,7 @@ app.use('/user', userRoutes);
 app.use(expenseRoutes);
 app.use('/purchase',purchaserout)
 app.use('/premium',premiumrout);
+app.use('/password',forgotrout);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

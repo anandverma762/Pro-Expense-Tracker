@@ -64,7 +64,7 @@ body {
 
   /* signup */
 
-  .signup-form,.login-form {
+  .signup-form,.login-form,.forgot-form {
     max-width: 300px;
     margin: 0 auto;
   }
@@ -103,7 +103,7 @@ body {
     display: inline-block;
 
   }
-    .lg-btn,.sign-btn{
+    .lg-btn,.sign-btn,.forgot{
       display: block;
       margin-left: 535px;
     }
@@ -123,4 +123,8 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: large;
 
+  }
+
+  .forgot h5 {
+    color: #f67409;
   }

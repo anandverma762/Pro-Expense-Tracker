@@ -1,5 +1,5 @@
 
-
+//signup form
 async function add() {
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
@@ -249,7 +249,7 @@ const leaderboardContainer = document.querySelector('.ldr-list-container');
     console.log(dataldr);
     dataldr.forEach((expense)=>{
       const li = document.createElement('li');
-      li.textContent = `Name: ${expense.name} - Total Expense:  $${expense.totalamount} `;
+      li.textContent = `Name: ${expense.name} - Total Expense:  $${expense.toamount} `;
       ldrlist.appendChild(li);
 
     })
